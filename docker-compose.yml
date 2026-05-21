@@ -1,0 +1,21 @@
+services: 
+  localproxy:
+    image: nginx:alpine
+    container_name: local_proxy
+    restart: always
+    volumes:
+      - ./conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - VIRTUAL_HOST=proxy.chipkineev.ru
+      - LETSENCRYPT_HOST=proxy.chipkineev.ru
+      - LETSENCRYPT_EMAIL=alex@chipkineev.ru
+      - VIRTUAL_PORT=80
+    networks:
+      - nginx-proxy
+    extra_hosts:
+      - "cam1.local:192.168.0.130"
+      - "cam2.local:192.168.0.140"
+
+networks:
+  nginx-proxy:
+    external: true
